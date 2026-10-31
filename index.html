@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awesome Knowledge - Gia Tài Tri Thức Của Ba Mẹ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif-book { font-family: 'Lora', serif; }
+  </style>
+</head>
+<body class="bg-amber-50/40 text-stone-800 antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const CATEGORIES = [
+      { id: 'all', name: 'Tất cả bài học', icon: '📚', color: 'bg-stone-100 text-stone-800' },
+      { id: 'life', name: 'Nhân sinh quan & Bài học sống', icon: '🌱', color: 'bg-emerald-100 text-emerald-800' },
+      { id: 'career', name: 'Sự nghiệp & Tư duy', icon: '💡', color: 'bg-blue-100 text-blue-800' },
+      { id: 'finance', name: 'Tài chính & Đầu tư', icon: '📈', color: 'bg-amber-100 text-amber-800' },
+      { id: 'family', name: 'Bí quyết Góc Bếp & Gia đình', icon: '🍲', color: 'bg-rose-100 text-rose-800' },
+      { id: 'capsule', name: 'Thư gửi tương lai (Time Capsule)', icon: '✉️', color: 'bg-purple-100 text-purple-800' }
+    ];
+
+    const INITIAL_ITEMS = [
+      {
+        id: '1',
+        title: 'Chữ Tín và Sự Tử Tế Là Gốc Rễ Của Mọi Thành Công',
+        category: 'life',
+        author: 'Ba & Mẹ',
+        milestone: 'Mọi lúc',
+        date: '2026-10-31',
+        favorite: true,
+        takeaway: 'Người thông minh có thể đi nhanh, nhưng người tử tế và giữ chữ Tín mới là người đi được đến cuối con đường.',
+        content: 'Trong cuộc đời, các con sẽ gặp rất nhiều ngã rẽ và những lời mời mọc hấp dẫn. Hãy luôn nhớ rằng danh dự và uy tín cá nhân mất cả đời để xây dựng nhưng chỉ mất một giây để đánh mất.\n\nKhi hứa điều gì, hãy làm hết sức mình; nếu gặp khó khăn không thể hoàn thành, hãy thẳng thắn nhận lỗi và tìm cách khắc phục sớm nhất. Sống tử tế không phải là yếu đuối, mà là lựa chọn của một tâm hồn mạnh mẽ.'
+      },
+      {
+        id: '2',
+        title: 'Tư Duy Nguyên Bản (First Principles) & Khả Năng Tự Học',
+        category: 'career',
+        author: 'Mẹ',
+        milestone: 'Khi con đi làm',
+        date: '2026-10-31',
+        favorite: true,
+        takeaway: 'Đừng chỉ học cách làm theo quy trình, hãy luôn đặt câu hỏi: Bản chất gốc rễ của vấn đề này là gì?',
+        content: 'Thế giới công nghệ và xã hội thay đổi mỗi ngày. Kỹ năng quan trọng nhất không phải là con thuộc lòng bao nhiêu kiến thức ở trường, mà là khả năng tự học, phân rã vấn đề phức tạp thành những phần nhỏ nhất và kiên trì giải quyết từng bước một.\n\nKhi gặp một bài toán khó trong công việc, hãy viết rõ: Mục tiêu cuối cùng là gì? Đâu là rào cản thật sự? Và thử nghiệm giải pháp nhỏ ngay lập tức.'
+      },
+      {
+        id: '3',
+        title: 'Quy Tắc Lãi Kép Và Sự Tự Do Tài Chính',
+        category: 'finance',
+        author: 'Ba & Mẹ',
+        milestone: 'Khi con 18 tuổi',
+        date: '2026-10-31',
+        favorite: false,
+        takeaway: 'Đừng làm việc vì tiền cả đời, hãy để đồng tiền làm việc chăm chỉ cho sự tự do của con.',
+        content: '1. Chi tiêu ít hơn số tiền mình kiếm được: Luôn trích ra ít nhất 20% thu nhập ngay khi vừa nhận lương để tích lũy và đầu tư.\n2. Quỹ dự phòng khẩn cấp: Luôn giữ khoản dự phòng tương đương 6 tháng sinh hoạt phí trước khi đầu tư mạo hiểm.\n3. Sức mạnh của thời gian: Đầu tư đều đặn, kỷ luật và kiên nhẫn vào những tài sản có giá trị thực sẽ mang lại quả ngọt nhờ lãi kép.'
+      },
+      {
+        id: '4',
+        title: 'Căn Bếp Ấm Và Hương Vị Gia Đình',
+        category: 'family',
+        author: 'Mẹ',
+        milestone: 'Khi con lập gia đình',
+        date: '2026-10-31',
+        favorite: true,
+        takeaway: 'Một bữa ăn ngon tự tay chuẩn bị không chỉ nuôi dưỡng cơ thể mà còn là sợi dây gắn kết yêu thương bền chặt nhất.',
+        content: 'Dù cuộc sống bận rộn đến đâu, hãy biết tự nấu cho mình và người thân những món ăn lành mạnh. Bí quyết của một món ăn ngon nằm ở sự chỉn chu từ nguyên liệu tươi sạch và tình yêu thương của người nấu.\n\nHạnh phúc gia đình được vun đắp từ những điều giản dị: cùng nhau ăn tối, lắng nghe nhau không phán xét và luôn nói lời cảm ơn.'
+      },
+      {
+        id: '5',
+        title: 'Gửi Con Ngày Bước Sang Tuổi 18',
+        category: 'capsule',
+        author: 'Ba & Mẹ',
+        milestone: 'Khi con 18 tuổi',
+        date: '2026-10-31',
+        favorite: true,
+        takeaway: 'Dù con bay cao và xa đến đâu, gia đình vẫn mãi là bến đỗ bình yên nhất đón con trở về.',
+        content: 'Chúc mừng con đã chính thức bước vào ngưỡng cửa trưởng thành! Từ hôm nay, con có toàn quyền viết nên câu chuyện cuộc đời mình.\n\nĐừng sợ sai lầm hay vấp ngã, vì mỗi vết xước đều dạy con trưởng thành hơn. Hãy sống một cuộc đời rực rỡ, có ích và luôn giữ trái tim ấm áp. Ba mẹ luôn tự hào và yêu thương con vô điều kiện.'
+      }
+    ];
+
+    function App() {
+      const [items, setItems] = useState(() => {
+        const saved = localStorage.getItem('awesome_knowledge_items');
+        return saved ? JSON.parse(saved) : INITIAL_ITEMS;
+      });
+      const [activeTab, setActiveTab] = useState('library'); // library | create | export
+      const [selectedCategory, setSelectedCategory] = useState('all');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [readingItem, setReadingItem] = useState(null);
+      const [readerTheme, setReaderTheme] = useState('sepia');
+      const [copied, setCopied] = useState(false);
+
+      const [formData, setFormData] = useState({
+        title: '',
+        category: 'life',
+        author: 'Ba & Mẹ',
+        milestone: 'Mọi lúc',
+        takeaway: '',
+        content: ''
+      });
+
+      useEffect(() => {
+        localStorage.setItem('awesome_knowledge_items', JSON.stringify(items));
+      }, [items]);
+
+      const filteredItems = useMemo(() => {
+        return items.filter(item => {
+          const matchCat = selectedCategory === 'all' || item.category === selectedCategory;
+          const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              item.takeaway.toLowerCase().includes(searchQuery.toLowerCase());
+          return matchCat && matchSearch;
+        });
+      }, [items, selectedCategory, searchQuery]);
+
+      const handleSave = (e) => {
+        e.preventDefault();
+        if (!formData.title.trim() || !formData.content.trim()) return;
+        const newItem = {
+          ...formData,
+          id: Date.now().toString(),
+          date: new Date().toISOString().split('T')[0],
+          favorite: false
+        };
+        setItems([newItem, ...items]);
+        setFormData({ title: '', category: 'life', author: 'Ba & Mẹ', milestone: 'Mọi lúc', takeaway: '', content: '' });
+        setActiveTab('library');
+      };
+
+      const toggleFavorite = (id) => {
+        setItems(items.map(it => it.id === id ? { ...it, favorite: !it.favorite } : it));
+      };
+
+      const deleteItem = (id) => {
+        setItems(items.filter(it => it.id !== id));
+        if (readingItem && readingItem.id === id) setReadingItem(null);
+      };
+
+      const generateMarkdown = () => {
+        let md = `# 🏛️ Awesome Knowledge - Gia Tài Tri Thức Của Ba Mẹ\n\n`;
+        md += `> *"Tài sản lớn nhất ba mẹ để lại cho con không phải là tiền bạc, mà là trí tuệ, nhân cách và những bài học được đúc kết bằng cả cuộc đời."*\n\n`;
+        CATEGORIES.filter(c => c.id !== 'all').forEach(cat => {
+          const catItems = items.filter(i => i.category === cat.id);
+          if (catItems.length > 0) {
+            md += `## ${cat.icon} ${cat.name}\n\n`;
+            catItems.forEach(item => {
+              md += `### ${item.title}\n`;
+              md += `- **Tác giả:** ${item.author} | **Cột mốc:** ${item.milestone} | **Ngày viết:** ${item.date}\n`;
+              if (item.takeaway) md += `- **Đúc kết vàng:** *"${item.takeaway}"*\n`;
+              md += `\n${item.content}\n\n---\n\n`;
+            });
+          }
+        });
+        return md;
+      };
+
+      const copyMarkdown = () => {
+        navigator.clipboard.writeText(generateMarkdown());
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col md:flex-row">
+          {/* Sidebar */}
+          <aside className="w-full md:w-72 bg-stone-900 text-stone-100 p-6 flex flex-col justify-between shrink-0">
+            <div>
+              <div className="flex items-center gap-3 mb-8 pb-4 border-b border-stone-700">
+                <span className="text-3xl">🏛️</span>
+                <div>
+                  <h1 className="font-serif-book font-bold text-lg text-amber-400 leading-tight">Gia Tài Tri Thức</h1>
+                  <p className="text-xs text-stone-400">Dành tặng các con yêu</p>
+                </div>
+              </div>
+
+              <nav className="space-y-2 mb-8">
+                <button
+                  onClick={() => setActiveTab('library')}
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition flex items-center gap-3 ${activeTab === 'library' ? 'bg-amber-600 text-white' : 'hover:bg-stone-800 text-stone-300'}`}
+                >
+                  <span>📖</span> Kho Tàng Tri Thức ({items.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('create')}
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition flex items-center gap-3 ${activeTab === 'create' ? 'bg-amber-600 text-white' : 'hover:bg-stone-800 text-stone-300'}`}
+                >
+                  <span>✍️</span> Viết Bài Học Mới
+                </button>
+                <button
+                  onClick={() => setActiveTab('export')}
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition flex items-center gap-3 ${activeTab === 'export' ? 'bg-amber-600 text-white' : 'hover:bg-stone-800 text-stone-300'}`}
+                >
+                  <span>🚀</span> Xuất GitHub (README.md)
+                </button>
+              </nav>
+
+              <div className="space-y-1">
+                <p className="text-xs uppercase tracking-wider text-stone-400 font-semibold px-2 mb-2">Chủ đề gia bảo</p>
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => { setSelectedCategory(cat.id); setActiveTab('library'); }}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition flex items-center justify-between ${selectedCategory === cat.id && activeTab === 'library' ? 'bg-stone-800 text-amber-400 font-semibold' : 'text-stone-400 hover:bg-stone-800/60'}`}
+                  >
+                    <span className="truncate">{cat.icon} {cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-8 pt-4 border-t border-stone-800 text-xs text-stone-400">
+              <p>Kho lưu trữ: <strong className="text-stone-200">awesome-knowledge</strong></p>
+              <p className="mt-1">Tự động lưu trên trình duyệt của bạn.</p>
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <main className="flex-1 p-6 md:p-10 max-w-5xl mx-auto w-full">
+            {activeTab === 'library' && (
+              <div>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                  <div>
+                    <h2 className="font-serif-book text-2xl md:text-3xl font-bold text-stone-900">
+                      Sách Gia Bảo Của Ba Mẹ
+                    </h2>
+                    <p className="text-stone-600 text-sm mt-1">
+                      Nơi lưu giữ những bài học tâm huyết nhất của Ba và Mẹ dành cho con cái.
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm bài học..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-stone-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                    <button
+                      onClick={() => setActiveTab('create')}
+                      className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-sm font-medium transition shrink-0"
+                    >
+                      + Thêm bài viết
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredItems.map(item => {
+                    const catObj = CATEGORIES.find(c => c.id === item.category) || CATEGORIES[1];
+                    return (
+                      <div
+                        key={item.id}
+                        className="bg-white rounded-2xl p-6 shadow-sm border border-stone-200/80 hover:shadow-md transition flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${catObj.color}`}>
+                              {catObj.icon} {catObj.name}
+                            </span>
+                            <button
+                              onClick={() => toggleFavorite(item.id)}
+                              className="text-lg hover:scale-110 transition"
+                              title="Đánh dấu tâm đắc"
+                            >
+                              {item.favorite ? '⭐' : '☆'}
+                            </button>
+                          </div>
+
+                          <h3
+                            onClick={() => setReadingItem(item)}
+                            className="font-serif-book font-bold text-xl text-stone-900 hover:text-amber-700 cursor-pointer mb-2"
+                          >
+                            {item.title}
+                          </h3>
+
+                          {item.takeaway && (
+                            <div className="bg-amber-50/80 border-l-4 border-amber-500 p-3 rounded-r-lg mb-4 text-xs italic text-stone-700">
+                              "{item.takeaway}"
+                            </div>
+                          )}
+
+                          <p className="text-stone-600 text-sm line-clamp-3 mb-4 whitespace-pre-line">
+                            {item.content}
+                          </p>
+                        </div>
+
+                        <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+                          <div>
+                            <span className="font-semibold text-stone-700">{item.author}</span> • <span>{item.milestone}</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => setReadingItem(item)}
+                              className="text-amber-700 font-semibold hover:underline"
+                            >
+                              Đọc trang sách →
+                            </button>
+                            <button
+                              onClick={() => deleteItem(item.id)}
+                              className="text-stone-400 hover:text-rose-600"
+                              title="Xóa bài"
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'create' && (
+              <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-stone-200 max-w-2xl mx-auto">
+                <h2 className="font-serif-book text-2xl font-bold text-stone-900 mb-6">
+                  ✍️ Ghi Lại Kiến Thức Mới Cho Con
+                </h2>
+                <form onSubmit={handleSave} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-1">Tiêu đề bài học *</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="VD: Bài học về cách chọn bạn mà chơi..."
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-stone-700 mb-1">Chủ đề</label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-xl border border-stone-300 bg-white"
+                      >
+                        {CATEGORIES.filter(c => c.id !== 'all').map(c => (
+                          <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-stone-700 mb-1">Người viết</label>
+                      <select
+                        value={formData.author}
+                        onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-xl border border-stone-300 bg-white"
+                      >
+                        <option value="Ba & Mẹ">Ba & Mẹ</option>
+                        <option value="Mẹ">Mẹ</option>
+                        <option value="Ba">Ba</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-stone-700 mb-1">Cột mốc đọc</label>
+                      <select
+                        value={formData.milestone}
+                        onChange={(e) => setFormData({ ...formData, milestone: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-xl border border-stone-300 bg-white"
+                      >
+                        <option value="Mọi lúc">Mọi lúc</option>
+                        <option value="Khi con 18 tuổi">Khi con 18 tuổi</option>
+                        <option value="Khi con đi làm">Khi con đi làm</option>
+                        <option value="Khi con lập gia đình">Khi con lập gia đình</option>
+                        <option value="Khi con gặp thất bại">Khi con gặp thất bại</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-1">Câu đúc kết vàng (Golden Takeaway)</label>
+                    <input
+                      type="text"
+                      value={formData.takeaway}
+                      onChange={(e) => setFormData({ ...formData, takeaway: e.target.value })}
+                      placeholder="1 câu ngắn gọn để con nhớ mãi..."
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-1">Nội dung chi tiết *</label>
+                    <textarea
+                      rows="7"
+                      required
+                      value={formData.content}
+                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                      placeholder="Hãy viết những lời tâm sự, kinh nghiệm thực tế hoặc công thức chi tiết tại đây..."
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('library')}
+                      className="px-5 py-2.5 rounded-xl border border-stone-300 text-stone-700 hover:bg-stone-100"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold shadow-sm"
+                    >
+                      Lưu vào Sách Gia Bảo
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {activeTab === 'export' && (
+              <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-stone-200">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                  <div>
+                    <h2 className="font-serif-book text-2xl font-bold text-stone-900">
+                      🚀 Xuất Dữ Liệu Chuẩn GitHub (lthsuong/awesome-knowledge)
+                    </h2>
+                    <p className="text-stone-600 text-sm mt-1">
+                      Sao chép nội dung bên dưới để dán vào tệp <strong>README.md</strong> trên GitHub của bạn.
+                    </p>
+                  </div>
+                  <button
+                    onClick={copyMarkdown}
+                    className="px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shrink-0"
+                  >
+                    {copied ? '✅ Đã sao chép!' : '📋 Sao chép Markdown'}
+                  </button>
+                </div>
+
+                <pre className="bg-stone-900 text-stone-100 p-5 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap max-h-96 leading-relaxed">
+                  {generateMarkdown()}
+                </pre>
+              </div>
+            )}
+          </main>
+
+          {/* Book Reader Modal */}
+          {readingItem && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+              <div className={`max-w-2xl w-full rounded-2xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto ${
+                readerTheme === 'sepia' ? 'bg-[#fbf3e4] text-stone-900' :
+                readerTheme === 'dark' ? 'bg-stone-900 text-stone-100' : 'bg-white text-stone-900'
+              }`}>
+                <div className="flex items-center justify-between pb-4 mb-6 border-b border-stone-300/50">
+                  <div className="flex gap-2">
+                    <button onClick={() => setReaderTheme('sepia')} className="px-3 py-1 rounded text-xs bg-[#e8dec8] text-stone-900 font-medium">Giấy cổ</button>
+                    <button onClick={() => setReaderTheme('light')} className="px-3 py-1 rounded text-xs bg-stone-200 text-stone-900 font-medium">Sáng</button>
+                    <button onClick={() => setReaderTheme('dark')} className="px-3 py-1 rounded text-xs bg-stone-800 text-white font-medium">Tối</button>
+                  </div>
+                  <button
+                    onClick={() => setReadingItem(null)}
+                    className="text-sm font-semibold px-3 py-1 rounded-lg bg-stone-200/70 text-stone-800 hover:bg-stone-300"
+                  >
+                    Đóng ✕
+                  </button>
+                </div>
+
+                <div className="font-serif-book">
+                  <p className="text-xs uppercase tracking-widest text-amber-700 font-semibold mb-2">
+                    {readingItem.author} • {readingItem.milestone}
+                  </p>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-snug">
+                    {readingItem.title}
+                  </h2>
+
+                  {readingItem.takeaway && (
+                    <blockquote className="border-l-4 border-amber-600 pl-4 italic text-lg mb-6 opacity-90">
+                      "{readingItem.takeaway}"
+                    </blockquote>
+                  )}
+
+                  <div className="text-base md:text-lg leading-relaxed whitespace-pre-line space-y-4">
+                    {readingItem.content}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

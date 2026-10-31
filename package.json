@@ -1,0 +1,9 @@
+{
+  "name": "awesome-knowledge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gia Tài Tri Thức Của Ba Mẹ - Dành tặng các con",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
